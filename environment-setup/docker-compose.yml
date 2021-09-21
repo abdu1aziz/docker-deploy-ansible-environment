@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+  ansible-base:
+    image: ansible/centos7-ansible
+    container_name: ansible-base
+    tty: true
+    cap_add:
+      - ALL
+    privileged: true
+    volumes:
+      - ./volumes/ansible-base:/volumes/ansible-base
+      - ./volumes/all:/volumes/all
+      - ./volumes/user2:/volumes/user2
+      - ./volumes/user3:/volumes/user3
+      - ./volumes/user4:/volumes/user4
+    network_mode: host
+    # command: bash -c TZ="America/New_York" date
+
+  User2:
+    image: mcnaughton/centos-base
+    container_name: user2-10.9.0.2
+    volumes:
+      - ./volumes/user2:/volumes/user2
+      - ./volumes/all:/volumes/all
+    networks:
+      net-10.9.0.0:
+        ipv4_address: 10.9.0.2
+
+  User3:
+    image: mcnaughton/centos-base
+    container_name: user3-10.9.0.3
+    cap_add:
+      - ALL
+    volumes:
+      - ./volumes/user3:/volumes/user3
+      - ./volumes/all:/volumes/all
+    networks:
+      net-10.9.0.0:
+        ipv4_address: 10.9.0.3
+
+  User4:
+    image: mcnaughton/centos-base
+    container_name: user4-10.9.0.4
+    cap_add:
+      - ALL
+    volumes:
+      - ./volumes/user4:/volumes/user4
+      - ./volumes/all:/volumes/all
+    networks:
+      net-10.9.0.0:
+        ipv4_address: 10.9.0.4
+
+networks:
+  net-10.9.0.0:
+    name: net-10.9.0.0
+    ipam:
+      config:
+        - subnet: 10.9.0.0/24
