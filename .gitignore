@@ -6,3 +6,6 @@
 /environment-setup/volumes/ansible-base/opt-splunk-var/*
 environment-setup/volumes/ansible-base/opt-splunk-etc/*
 environment-setup/volumes/ansible-base/opt-splunk-var/*
+!/environment-setup/volumes/ansible-base/opt-splunk-etc/.gitkeep
+!/environment-setup/volumes/ansible-base/opt-splunk-etc/.gitkeep
+
