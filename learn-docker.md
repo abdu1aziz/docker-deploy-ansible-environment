@@ -81,3 +81,16 @@ e76f0cd647f5
 cecb04fbf1dd
 688353a31fde
 ```
+
+12. Use the following commands to keep track of the docker containers running in the background.
+```bash
+docker stats
+```
+Example output:
+```bash
+CONTAINER ID   NAME             CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+65e46bca3755   ansible-base     1.17%     606.6MiB / 2GiB       29.62%    0B / 0B       1.51GB / 2.82GB   228
+a71f83c42ac3   user4-10.9.0.4   0.00%     2.98MiB / 15.62GiB    0.02%     6.02kB / 0B   0B / 0B           1
+b7bc232bd896   user2-10.9.0.2   0.00%     1.672MiB / 15.62GiB   0.01%     6.02kB / 0B   0B / 0B           1
+60ea964f01d8   user3-10.9.0.3   0.00%     2.961MiB / 15.62GiB   0.02%     6.02kB / 0B   0B / 0B           1
+``
