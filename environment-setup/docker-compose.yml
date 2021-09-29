@@ -3,19 +3,36 @@ version: "3"
 services:
   ansible-base:
     image: ansible/centos7-ansible
+    # Give More Resources To Docker Container If Needed:
+    # https://www.baeldung.com/ops/docker-memory-limit
+    mem_limit: 2G
+    mem_reservation: 1G
+    cpus: 2.00
     container_name: ansible-base
     tty: true
     cap_add:
       - ALL
     privileged: true
     volumes:
+      - ./volumes/ansible-base/opt-splunk-etc:/opt/splunk/etc
+      - ./volumes/ansible-base/opt-splunk-var:/opt/splunk/var
       - ./volumes/ansible-base:/volumes/ansible-base
       - ./volumes/all:/volumes/all
       - ./volumes/user2:/volumes/user2
       - ./volumes/user3:/volumes/user3
       - ./volumes/user4:/volumes/user4
     network_mode: host
-    # command: bash -c TZ="America/New_York" date
+    # This link was used to figure out what flags would automate the installation and first RUN process for admin account creation.
+    # https://docs.splunk.com/Documentation/Splunk/latest/Security/Secureyouradminaccount#Create_admin_credentials_using_the_--seed-passwd_or_--gen-and-print-passwd_CLI_arguments
+    entrypoint: ["/bin/sh","-c"]
+    command:
+      - |
+        rm -rf /volumes/ansible-base/opt-splunk-etc/*
+        rm -rf /volumes/ansible-base/opt-splunk-var/*
+        yum install epel-release -y
+        rpm -i /volumes/ansible-base/splunk-*.rpm
+        /opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt --seed-passwd iLoveNewYork11230
+        /bin/bash
 
   User2:
     image: mcnaughton/centos-base
