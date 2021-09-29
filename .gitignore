@@ -1,0 +1,8 @@
+# Ignore All Package (RPM) extension files.
+*.rpm
+
+# Ignore All Splunk Config Files.
+/environment-setup/volumes/ansible-base/opt-splunk-etc/*
+/environment-setup/volumes/ansible-base/opt-splunk-var/*
+environment-setup/volumes/ansible-base/opt-splunk-etc/*
+environment-setup/volumes/ansible-base/opt-splunk-var/*
