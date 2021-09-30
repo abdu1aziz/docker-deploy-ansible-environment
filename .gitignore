@@ -6,5 +6,9 @@
 /environment-setup/volumes/ansible-base/opt-splunk-var/*
 environment-setup/volumes/ansible-base/opt-splunk-etc/*
 environment-setup/volumes/ansible-base/opt-splunk-var/*
+environment-setup/volumes/all/user-seed.conf
+environment-setup/volumes/all/splunkforwarder-8.2.1-ddff1c41e5cf-linux-2.6-x86_64.rpm
+
+# Keep the Directories & files mentioned below.
 !/environment-setup/volumes/ansible-base/opt-splunk-etc/.gitkeep
 !/environment-setup/volumes/ansible-base/opt-splunk-var/.gitkeep

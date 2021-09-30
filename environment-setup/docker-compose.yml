@@ -21,6 +21,8 @@ services:
       - ./volumes/user2:/volumes/user2
       - ./volumes/user3:/volumes/user3
       - ./volumes/user4:/volumes/user4
+    # environment:
+    #   - SPLUNK_HOME=/opt/splunk/
     network_mode: host
     # This link was used to figure out what flags would automate the installation and first RUN process for admin account creation.
     # https://docs.splunk.com/Documentation/Splunk/latest/Security/Secureyouradminaccount#Create_admin_credentials_using_the_--seed-passwd_or_--gen-and-print-passwd_CLI_arguments
@@ -37,16 +39,35 @@ services:
   User2:
     image: mcnaughton/centos-base
     container_name: user2-10.9.0.2
+    stdin_open: true
+    hostname: user2
     volumes:
       - ./volumes/user2:/volumes/user2
       - ./volumes/all:/volumes/all
     networks:
       net-10.9.0.0:
         ipv4_address: 10.9.0.2
+    entrypoint: ["/bin/sh","-c"]
+    command:
+      - |
+        yum install epel-release -y
+        rpm -i /volumes/all/splunkforwarder-*.rpm
+        echo [*] Waiting for 10 Seconds Before Copying Config File.
+        sleep 12
+        cp -r /volumes/all/user-seed.conf /opt/splunkforwarder/etc/system/local/
+        echo [*] Copying Completed Now Setting Up Splunk Forwarder.
+        /opt/splunkforwarder/bin/splunk start --accept-license --answer-yes --no-prompt --seed-passwd iLoveNewYork11230
+        /opt/splunkforwarder/bin/splunk add forward-server cyberarmor-base:11000 -auth admin:iLoveNewYork11230
+        /opt/splunkforwarder/bin/splunk add monitor /var/log/
+        /opt/splunkforwarder/bin/splunk status
+        /bin/bash
+
 
   User3:
     image: mcnaughton/centos-base
     container_name: user3-10.9.0.3
+    stdin_open: true
+    hostname: user3
     cap_add:
       - ALL
     volumes:
@@ -55,10 +76,27 @@ services:
     networks:
       net-10.9.0.0:
         ipv4_address: 10.9.0.3
+    entrypoint: ["/bin/sh","-c"]
+    command:
+      - |
+        yum install epel-release -y
+        rpm -i /volumes/all/splunkforwarder-*.rpm
+        echo [*] Waiting for 10 Seconds Before Copying Config File.
+        sleep 12
+        cp -r /volumes/all/user-seed.conf /opt/splunkforwarder/etc/system/local/
+        echo [*] Copying Completed Now Setting Up Splunk Forwarder.
+        /opt/splunkforwarder/bin/splunk start --accept-license --answer-yes --no-prompt --seed-passwd iLoveNewYork11230
+        /opt/splunkforwarder/bin/splunk add forward-server cyberarmor-base:11000 -auth admin:iLoveNewYork11230
+        /opt/splunkforwarder/bin/splunk add monitor /var/log/
+        /opt/splunkforwarder/bin/splunk status
+        /bin/bash
+
 
   User4:
     image: mcnaughton/centos-base
     container_name: user4-10.9.0.4
+    stdin_open: true
+    hostname: user4
     cap_add:
       - ALL
     volumes:
@@ -67,6 +105,21 @@ services:
     networks:
       net-10.9.0.0:
         ipv4_address: 10.9.0.4
+    entrypoint: ["/bin/sh","-c"]
+    command:
+      - |
+        yum install epel-release -y
+        rpm -i /volumes/all/splunkforwarder-*.rpm
+        echo [*] Waiting for 10 Seconds Before Copying Config File.
+        sleep 12
+        cp -r /volumes/all/user-seed.conf /opt/splunkforwarder/etc/system/local/
+        echo [*] Copying Completed Now Setting Up Splunk Forwarder.
+        /opt/splunkforwarder/bin/splunk start --accept-license --answer-yes --no-prompt --seed-passwd iLoveNewYork11230
+        /opt/splunkforwarder/bin/splunk add forward-server cyberarmor-base:11000 -auth admin:iLoveNewYork11230
+        /opt/splunkforwarder/bin/splunk add monitor /var/log/
+        /opt/splunkforwarder/bin/splunk status
+        /bin/bash
+
 
 networks:
   net-10.9.0.0:
